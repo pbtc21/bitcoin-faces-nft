@@ -1,0 +1,7 @@
+name = "bitcoin-faces-nft"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+workers_dev = true
+
+[vars]
+PAYMENT_ADDRESS = "SPP5ZMH9NQDFD2K5CEQZ6P02AP8YPWMQ75TJW20M"

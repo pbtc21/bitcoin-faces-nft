@@ -1,0 +1,17 @@
+{
+  "name": "bitcoin-faces-nft",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "wrangler": "^4.54.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@stacks/transactions": "^7.3.1",
+    "hono": "^4.11.3"
+  }
+}
