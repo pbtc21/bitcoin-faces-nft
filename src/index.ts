@@ -93,7 +93,7 @@ function generateMetadata(address: string, hash?: number[]) {
     name: `Bitcoin Face #${address.slice(-8)}`,
     description: `A unique Bitcoin Face generated from Stacks address ${address}`,
     image: `https://bitcoinfaces.xyz/api/get-image?name=${address}`,
-    external_url: `https://bitcoinfaces.xyz/img/${address}`,
+    external_url: `https://bitcoin-faces.pbtc21.dev/preview/${address}`,
     attributes: [
       { trait_type: 'Source', value: 'Stacks Address' },
       { trait_type: 'Address', value: address },
