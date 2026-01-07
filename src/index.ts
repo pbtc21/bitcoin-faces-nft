@@ -224,8 +224,8 @@ app.post('/mint', async (c) => {
       sender: senderAddress,
       bitcoin_face: {
         image_url: `https://bitcoinfaces.xyz/api/get-image?name=${senderAddress}`,
-        preview_url: `https://bitcoin-faces-nft.p-d07.workers.dev/preview/${senderAddress}`,
-        metadata_url: `https://bitcoin-faces-nft.p-d07.workers.dev/metadata/${senderAddress}`,
+        preview_url: `https://bitcoin-faces.pbtc21.dev/preview/${senderAddress}`,
+        metadata_url: `https://bitcoin-faces.pbtc21.dev/metadata/${senderAddress}`,
       },
       metadata,
       note: 'Once the NFT contract is deployed, your Bitcoin Face will be minted automatically.',
@@ -240,7 +240,7 @@ app.post('/mint', async (c) => {
       functionName: 'mint',
       functionArgs: [
         principalCV(senderAddress),
-        stringAsciiCV(`https://bitcoin-faces-nft.p-d07.workers.dev/metadata/${senderAddress}`),
+        stringAsciiCV(`https://bitcoin-faces.pbtc21.dev/metadata/${senderAddress}`),
       ],
       senderKey: c.env.MINTER_PRIVATE_KEY,
       network: 'mainnet' as const,
@@ -268,8 +268,8 @@ app.post('/mint', async (c) => {
       recipient: senderAddress,
       bitcoin_face: {
         image_url: `https://bitcoinfaces.xyz/api/get-image?name=${senderAddress}`,
-        preview_url: `https://bitcoin-faces-nft.p-d07.workers.dev/preview/${senderAddress}`,
-        metadata_url: `https://bitcoin-faces-nft.p-d07.workers.dev/metadata/${senderAddress}`,
+        preview_url: `https://bitcoin-faces.pbtc21.dev/preview/${senderAddress}`,
+        metadata_url: `https://bitcoin-faces.pbtc21.dev/metadata/${senderAddress}`,
       },
       metadata,
       explorer: `https://explorer.hiro.so/txid/${broadcastResult.txid}?chain=mainnet`,

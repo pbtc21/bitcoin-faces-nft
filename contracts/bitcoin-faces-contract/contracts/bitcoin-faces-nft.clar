@@ -12,7 +12,7 @@
 
 ;; Data vars
 (define-data-var last-token-id uint u0)
-(define-data-var base-uri (string-ascii 256) "https://bitcoin-faces-nft.p-d07.workers.dev/metadata/")
+(define-data-var base-uri (string-ascii 256) "https://bitcoin-faces.pbtc21.dev/metadata/")
 
 ;; NFT definition
 (define-non-fungible-token bitcoin-face uint)
