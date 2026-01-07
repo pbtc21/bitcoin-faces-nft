@@ -237,7 +237,7 @@ app.post('/mint', async (c) => {
     const txOptions = {
       contractAddress: NFT_CONTRACT.address,
       contractName: NFT_CONTRACT.name,
-      functionName: 'mint',
+      functionName: 'mint-with-uri',
       functionArgs: [
         principalCV(senderAddress),
         stringAsciiCV(`https://bitcoin-faces.pbtc21.dev/metadata/${senderAddress}`),
