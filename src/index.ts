@@ -25,9 +25,9 @@ const CONTRACT = {
 };
 const MINT_PRICE = 1; // 1 microSTX for testing
 
-// NFT Contract (to be deployed)
+// NFT Contract (deployed)
 const NFT_CONTRACT = {
-  address: 'SPP5ZMH9NQDFD2K5CEQZ6P02AP8YPWMQ75TJW20M',
+  address: 'SP2QXPFF4M72QYZWXE7S5321XJDJ2DD32DGEMN5QA',
   name: 'bitcoin-faces-nft',
 };
 
