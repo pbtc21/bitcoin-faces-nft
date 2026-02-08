@@ -24,6 +24,22 @@ const CONTRACT = {
   name: 'simple-oracle',
 };
 const MINT_PRICE = 1; // 1 microSTX for testing
+const MINT_PRICE_SBTC = 1; // 1 sat for testing
+
+// sBTC contract
+const SBTC_CONTRACT = {
+  address: 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9',
+  name: 'token-sbtc',
+};
+
+type PaymentTokenType = 'STX' | 'sBTC';
+
+function getPaymentTokenType(c: any): PaymentTokenType {
+  const queryToken = c.req.query('tokenType');
+  const headerToken = c.req.header('X-PAYMENT-TOKEN-TYPE');
+  const tokenStr = (headerToken || queryToken || 'STX').toUpperCase();
+  return tokenStr === 'SBTC' ? 'sBTC' : 'STX';
+}
 
 // NFT Contract (deployed)
 const NFT_CONTRACT = {
@@ -175,27 +191,58 @@ app.post('/mint', async (c) => {
   if (!paymentTxid) {
     const nonce = crypto.randomUUID();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+    const tokenType = getPaymentTokenType(c);
 
-    return c.json({
+    const baseResponse = {
       error: 'Payment Required',
       code: 'PAYMENT_REQUIRED',
       resource: '/mint',
+      nonce,
+      expiresAt,
+      network: 'mainnet',
+      recipient: CONTRACT.address,
+      description: 'Mint a unique Bitcoin Face NFT based on your address',
+    };
+
+    if (tokenType === 'sBTC') {
+      return c.json({
+        ...baseResponse,
+        maxAmountRequired: MINT_PRICE_SBTC.toString(),
+        tokenType: 'sBTC',
+        tokenContract: SBTC_CONTRACT,
+        payment: {
+          contract: `${SBTC_CONTRACT.address}.${SBTC_CONTRACT.name}`,
+          function: 'transfer',
+          price: MINT_PRICE_SBTC,
+          token: 'sBTC',
+        },
+        instructions: [
+          '1. Call sBTC transfer with amount to recipient',
+          '2. Wait for transaction confirmation',
+          '3. Retry request with X-Payment header containing txid',
+        ],
+      }, 402);
+    }
+
+    return c.json({
+      ...baseResponse,
+      maxAmountRequired: MINT_PRICE.toString(),
+      tokenType: 'STX',
       payment: {
         contract: `${CONTRACT.address}.${CONTRACT.name}`,
         function: 'call-with-stx',
         price: MINT_PRICE,
         token: 'STX',
-        recipient: CONTRACT.address,
-        network: 'mainnet',
+      },
+      paymentOptions: {
+        stx: { amount: MINT_PRICE },
+        sbtc: { amount: MINT_PRICE_SBTC, tokenContract: SBTC_CONTRACT },
       },
       instructions: [
         '1. Call the contract function with STX payment',
         '2. Wait for transaction confirmation',
         '3. Retry request with X-Payment header containing txid',
       ],
-      nonce,
-      expiresAt,
-      description: 'Mint a unique Bitcoin Face NFT based on your address',
     }, 402);
   }
 
