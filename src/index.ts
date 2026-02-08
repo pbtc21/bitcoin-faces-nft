@@ -184,6 +184,100 @@ app.get('/metadata/:address', async (c) => {
   return c.json(metadata);
 });
 
+// x402 Discovery for /mint endpoint
+app.get('/mint', (c) => {
+  return c.json({
+    x402Version: 1,
+    name: 'Bitcoin Faces NFT',
+    accepts: [
+      {
+        scheme: 'exact',
+        network: 'stacks',
+        maxAmountRequired: MINT_PRICE_SBTC.toString(),
+        resource: '/mint',
+        description: 'Mint a unique Bitcoin Face NFT based on your Stacks address',
+        mimeType: 'application/json',
+        payTo: 'SPKH9AWG0ENZ87J1X0PBD4HETP22G8W22AFNVF8K',
+        maxTimeoutSeconds: 300,
+        asset: 'sBTC',
+        outputSchema: {
+          input: {
+            type: 'object',
+            properties: {
+              'X-Payment': {
+                type: 'string',
+                description: 'Transaction ID of sBTC transfer payment',
+              },
+            },
+            required: ['X-Payment'],
+          },
+          output: {
+            type: 'object',
+            properties: {
+              status: { type: 'string', enum: ['minted', 'preview'] },
+              message: { type: 'string' },
+              mint_txid: { type: 'string' },
+              payment_txid: { type: 'string' },
+              recipient: { type: 'string' },
+              bitcoin_face: {
+                type: 'object',
+                properties: {
+                  image_url: { type: 'string' },
+                  preview_url: { type: 'string' },
+                  metadata_url: { type: 'string' },
+                },
+              },
+              metadata: { type: 'object' },
+            },
+          },
+        },
+      },
+      {
+        scheme: 'exact',
+        network: 'stacks',
+        maxAmountRequired: MINT_PRICE.toString(),
+        resource: '/mint',
+        description: 'Mint a unique Bitcoin Face NFT based on your Stacks address (STX)',
+        mimeType: 'application/json',
+        payTo: 'SPKH9AWG0ENZ87J1X0PBD4HETP22G8W22AFNVF8K',
+        maxTimeoutSeconds: 300,
+        asset: 'STX',
+        outputSchema: {
+          input: {
+            type: 'object',
+            properties: {
+              'X-Payment': {
+                type: 'string',
+                description: 'Transaction ID of STX payment via oracle contract',
+              },
+            },
+            required: ['X-Payment'],
+          },
+          output: {
+            type: 'object',
+            properties: {
+              status: { type: 'string', enum: ['minted', 'preview'] },
+              message: { type: 'string' },
+              mint_txid: { type: 'string' },
+              payment_txid: { type: 'string' },
+              recipient: { type: 'string' },
+              bitcoin_face: {
+                type: 'object',
+                properties: {
+                  image_url: { type: 'string' },
+                  preview_url: { type: 'string' },
+                  metadata_url: { type: 'string' },
+                },
+              },
+              metadata: { type: 'object' },
+            },
+          },
+        },
+      },
+    ],
+  });
+});
+
 // Mint Bitcoin Face NFT (x402 PAID)
 app.post('/mint', async (c) => {
   const paymentTxid = c.req.header('X-Payment');
